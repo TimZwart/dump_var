@@ -58,7 +58,10 @@ def stringify_class(var):
     retval = str(type(var)) + ": {["
     fields = [a for a in dir(var) if not a.startswith('__') and not callable(getattr(var, a))]
     for field in fields:
-        retval += field + ": " + string_var(vars(var)[field])
+        if hasattr(var, "__dict__"):
+            retval += field + ": " + string_var(vars(var)[field])
+        else:
+            retval += field + ": " + "?"
     retval += "]}"
     return retval
 
